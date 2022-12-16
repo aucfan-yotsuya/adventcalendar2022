@@ -275,7 +275,7 @@ func AquarionL() []Score {
 		{k41s, N, L8H},
 		{k41s, M, L16},
 		{k43, N, L2},
-		{k45s, N, L2},
+		{k35s, N, L2},
 		{k36, N, L2},
 		{k41, N, L2},
 		{k44s, N, L2},

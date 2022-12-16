@@ -1,6 +1,7 @@
 package main
 
 import (
+	"flag"
 	"log"
 	"math"
 	"os"
@@ -149,17 +150,23 @@ func main() {
 	}
 }
 func Run() error {
-	//xmas := Sin(Xmas())
-	//xmasM := Sin(XmasM())
-	//xmasL := Sin(XmasL())
-	//Mix(&xmasM, &xmasL)
-	//Mix(&xmas, &xmasM)
-	melody := Sin(Aquarion())
-	melodyM := Sin(AquarionM())
-	melodyL := Sin(AquarionL())
-	Mix(&melody, &melodyL)
-	Mix(&melody, &melodyM)
-	if err := Write(melody); err != nil {
+	var melody [][]gowav.Sample
+	music := flag.String("music", "aquarion", "music name")
+	flag.Parse()
+	switch *music {
+	case "hanon":
+		melody = append(melody, Sin(Hanon()), Sin(HanonL()))
+		Mix(&melody[0], &melody[1])
+	case "xmas":
+		melody = append(melody, Sin(Xmas()), Sin(XmasM()), Sin(XmasL()))
+		Mix(&melody[0], &melody[1])
+		Mix(&melody[0], &melody[2])
+	case "aquarion":
+		melody = append(melody, Sin(Aquarion()), Sin(AquarionM()), Sin(AquarionL()))
+		Mix(&melody[0], &melody[1])
+		Mix(&melody[0], &melody[2])
+	}
+	if err := Write(melody[0]); err != nil {
 		return err
 	}
 	return nil
