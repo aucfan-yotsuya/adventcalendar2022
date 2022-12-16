@@ -122,7 +122,7 @@ const (
 const Rate = 48000
 
 // テンポ
-const Tempo = 120
+const Tempo = 160
 
 // 音符の種類
 const (
@@ -139,8 +139,8 @@ const (
 )
 
 const (
-	MAX = 60000
-	MIN = -10000
+	MAX = 120000
+	MIN = -40000
 )
 
 func main() {
@@ -149,12 +149,17 @@ func main() {
 	}
 }
 func Run() error {
-	xmas := Sin(Xmas())
-	xmasM := Sin(XmasM())
-	xmasL := Sin(XmasL())
-	Mix(&xmasM, &xmasL)
-	Mix(&xmas, &xmasM)
-	if err := Write(xmas); err != nil {
+	//xmas := Sin(Xmas())
+	//xmasM := Sin(XmasM())
+	//xmasL := Sin(XmasL())
+	//Mix(&xmasM, &xmasL)
+	//Mix(&xmas, &xmasM)
+	melody := Sin(Aquarion())
+	melodyM := Sin(AquarionM())
+	melodyL := Sin(AquarionL())
+	Mix(&melody, &melodyL)
+	Mix(&melody, &melodyM)
+	if err := Write(melody); err != nil {
 		return err
 	}
 	return nil
@@ -182,6 +187,10 @@ func Sin(score []Score) []gowav.Sample {
 			gw.Values[0] = int(si * 0x7fff * s.V)
 			samples = append(samples, gw)
 		}
+	}
+	// 余白
+	for i := 0; i < Rate; i++ {
+		samples = append(samples, gowav.Sample{})
 	}
 	return samples
 }
